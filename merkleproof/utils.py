@@ -1,21 +1,34 @@
 import binascii
 import sys
 
+from merkleproof.hash_functions import sha256
+
+
 unhexlify = binascii.unhexlify
 hexlify = binascii.hexlify
 if sys.version > '3':
     unhexlify = lambda h: binascii.unhexlify(h.encode('utf8'))
     hexlify = lambda b: binascii.hexlify(b).decode('utf8')
 
-def validate_proof(proof, target_hash, merkle_root, hash_f):
+
+def validate_receipt(receipt_json):
     """
-    Takes a proof array, a target hash value, and a merkle root
-    Checks the validity of the proof and return true or false
+    Given a chainpoint-formatted receipt, validate the proof
+    :param receipt_json: chainpoint-formatted receipt json
+    :return: whether proof is valid, Boolean
+    """
+    return validate_proof(receipt_json['proof'], receipt_json['targetHash'], receipt_json['merkleRoot'])
+
+
+def validate_proof(proof, target_hash, merkle_root, hash_f=sha256):
+    """
+    Takes a proof array, a target hash value, and a merkle root.
+    Checks the validity of the proof and return true or false.
     :param proof:
     :param target_hash:
     :param merkle_root:
     :param hash_f:
-    :return:
+    :return: whether proof is valid, Boolean
     """
 
     if not proof:
@@ -40,12 +53,12 @@ def validate_proof(proof, target_hash, merkle_root, hash_f):
     return hexlify(proof_hash) == hexlify(merkle_root)
 
 
-def unshift(arg1, arg2):
-    arg1.insert(0, arg2)
-
-
-def is_hex(content):
-    """Make sure this is actually a valid hex string."""
+def _is_hex(content):
+    """
+    Make sure this is actually a valid hex string.
+    :param content:
+    :return:
+    """
     hex_digits = '0123456789ABCDEFabcdef'
     for char in content:
         if char not in hex_digits:
@@ -57,7 +70,7 @@ def get_buffer(value):
     if type(value) is not str:
         # we already have a buffer, so
         return value
-    elif is_hex(value):
+    elif _is_hex(value):
         # the value is a hex string, convert to buffer and return
         return bytearray.fromhex(value)
     else:

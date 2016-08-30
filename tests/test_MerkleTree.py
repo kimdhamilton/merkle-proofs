@@ -8,7 +8,8 @@ merkle-tools nodejs library.
 """
 import unittest
 
-from merkleproof.MerkleTree import MerkleTree, sha256, md5, sha512, sha384, sha224
+from merkleproof.MerkleTree import MerkleTree
+from merkleproof.hash_functions import sha256, md5, sha512, sha384, sha224
 
 
 class MerkleTreeTest(unittest.TestCase):

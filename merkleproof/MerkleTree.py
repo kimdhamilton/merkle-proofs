@@ -1,41 +1,18 @@
 """
-Python library allowing creation of Merkle trees anf output receipts in a format consistent with the chainpoint v2
+Python library allowing creation of Merkle trees and output receipts in a format consistent with the chainpoint v2
 standard. Also allows validation of a Merkle receipt.
 
 This was developed in support of the Blockchain Certificates project (http://www.blockcerts.org/). It supports only
 a subset of the Chainpoint v2 standard.
 """
-import hashlib
 import math
-from merkleproof.utils import unshift, get_buffer, validate_proof, hexlify
-
-
-def sha256(content):
-    """Finds the sha256 hash of the content."""
-    if isinstance(content, str):
-        content = content.encode('utf-8')
-    return hashlib.sha256(content).hexdigest()
-
-def md5(content):
-    """Finds the md5 hash of the content."""
-    return hashlib.md5(content).hexdigest()
-
-def sha512(content):
-    """Finds the sha512 hash of the content."""
-    return hashlib.sha512(content).hexdigest()
-
-def sha224(content):
-    """Finds the sha224 hash of the content."""
-    return hashlib.sha224(content).hexdigest()
-
-def sha384(content):
-    """Finds the sha384 hash of the content."""
-    return hashlib.sha384(content).hexdigest()
+from merkleproof.utils import get_buffer, validate_proof, hexlify
+from merkleproof.hash_functions import *
 
 
 class MerkleTree:
     """
-    Enables building a merkle tree, from which you can generate merkle proofs
+    Enables building a merkle tree, from which you can generate merkle proofs.
     """
     def __init__(self, hash_f=sha256):
         """
@@ -47,7 +24,7 @@ class MerkleTree:
 
     def reset_tree(self):
         """
-        Resets the current tree to empty
+        Resets the current tree to empty.
         """
         self.tree = {}
         self.tree['leaves'] = []
@@ -56,7 +33,7 @@ class MerkleTree:
 
     def add_leaf(self, value, do_hash=False):
         """
-        Add a leaf to the tree
+        Add a leaf to the tree.
         :param value: hash value (as a Buffer) or hex string
         :param do_hash: whether to hash value
         """
@@ -65,16 +42,18 @@ class MerkleTree:
 
     def add_leaves(self, values_array, do_hash=False):
         """
-        Add leaves to the tree
-        Accepts hash values as an array of Buffers or hex strings
-        TODO
+        Add leaves to the tree.
+
+        Similar to chainpoint merkle tree library, this accepts hash values as an array of Buffers or hex strings.
+        :param values_array: array of values to add
+        :param do_hash: whether to hash the values before inserting
         """
         self.tree['is_ready'] = False
         [self._add_leaf(value, do_hash) for value in values_array]
 
     def get_leaf(self, index):
         """
-        Returns a leaf at the given index
+        Returns a leaf at the given index.
         :param index:
         :return: leaf (value) at index
         """
@@ -86,30 +65,29 @@ class MerkleTree:
 
     def get_leaf_count(self):
         """
-        Returns the number of leaves added to the tree
+        Returns the number of leaves added to the tree.
         :return:
         """
         return len(self.tree['leaves'])
 
     def get_tree_ready_state(self):
         """
-        Returns the ready state of the tree
+        Returns the ready state of the tree.
         :return:
         """
         return self.tree['is_ready']
 
     def make_tree(self):
         """
-        Generates the merkle tree
+        Generates the merkle tree.
         """
         self.tree['is_ready'] = False
         leaf_count = len(self.tree['leaves'])
         if leaf_count > 0:
             # skip this whole process if there are no leaves added to the tree
-            # TODO: this naive unshift equivalent in python is inefficient; replace with a deque implementation
-            unshift(self.tree['levels'], self.tree['leaves'])
+            self._unshift(self.tree['levels'], self.tree['leaves'])
             while len(self.tree['levels'][0]) > 1:
-                unshift(self.tree['levels'], self._calculate_next_level())
+                self._unshift(self.tree['levels'], self._calculate_next_level())
         self.tree['is_ready'] = True
 
     def get_merkle_root(self):
@@ -167,6 +145,7 @@ class MerkleTree:
 
     def make_receipt(self, index, txid):
         receipt = {
+            '@context': 'https://w3id.org/chainpoint/v2',
             '@type': 'BlockchainReceipt',
             'type': 'ChainpointSHA256v2',
             'targetHash': hexlify(self.tree.get_leaf(index)),
@@ -210,3 +189,12 @@ class MerkleTree:
                 # this is an odd ending node, promote up to the next level by itself
                 nodes.append(top_level[x])
         return nodes
+
+    def _unshift(self, arg1, arg2):
+        """
+        TODO: this naive unshift equivalent in python is inefficient; replace with a deque implementation
+        :param arg1:
+        :param arg2:
+        :return:
+        """
+        arg1.insert(0, arg2)
