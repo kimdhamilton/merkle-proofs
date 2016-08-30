@@ -1,3 +1,10 @@
+"""
+Python library allowing creation of Merkle trees anf output receipts in a format consistent with the chainpoint v2
+standard. Also allows validation of a Merkle receipt.
+
+This was developed in support of the Blockchain Certificates project (http://www.blockcerts.org/). It supports only
+a subset of the Chainpoint v2 standard.
+"""
 import hashlib
 import math
 from merkleproof.utils import unshift, get_buffer, validate_proof, hexlify
@@ -27,6 +34,9 @@ def sha384(content):
 
 
 class MerkleTree:
+    """
+    Enables building a merkle tree, from which you can generate merkle proofs
+    """
     def __init__(self, hash_f=sha256):
         """
         Initialize Merkle tree. Defaults to SHA256.
@@ -126,8 +136,8 @@ class MerkleTree:
             return None
 
         proof = []
-        for x in range(current_row_index, 0, -1):
-            current_level_node_count = len(self.tree['levels'][x])
+        for current_level in range(current_row_index, 0, -1):
+            current_level_node_count = len(self.tree['levels'][current_level])
             # skip if this is an odd end node
             if index == current_level_node_count - 1 and current_level_node_count % 2 == 1:
                 index = int(math.floor(index / 2))
@@ -146,7 +156,7 @@ class MerkleTree:
             else:
                 sibling_position = 'right'
 
-            sibling_value = self.tree['levels'][x][sibling_index]
+            sibling_value = self.tree['levels'][current_level][sibling_index]
             sibling[sibling_position] = hexlify(sibling_value)
 
             proof.append(sibling)
@@ -154,6 +164,22 @@ class MerkleTree:
             index = int(math.floor(index / 2))  # set index to the parent index
 
         return proof
+
+    def make_receipt(self, index, txid):
+        receipt = {
+            '@type': 'BlockchainReceipt',
+            'type': 'ChainpointSHA256v2',
+            'targetHash': hexlify(self.tree.get_leaf(index)),
+            'merkleRoot': self.tree.get_merkle_root(),
+            'proof': self.tree.get_proof(index),
+            'anchors': [
+                {
+                    'type': 'BTCOpReturn',
+                    'sourceId': txid
+                }
+            ]
+        }
+        return receipt
 
     def validate_proof(self, proof, target_hash, merkle_root):
         """

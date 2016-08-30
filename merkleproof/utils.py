@@ -47,14 +47,14 @@ def unshift(arg1, arg2):
 def is_hex(content):
     """Make sure this is actually a valid hex string."""
     hex_digits = '0123456789ABCDEFabcdef'
-    for i in range(len(content)):
-        if not content[i] in hex_digits:
+    for char in content:
+        if char not in hex_digits:
             return False
     return True
 
 
 def get_buffer(value):
-    if not type(value) is str:
+    if type(value) is not str:
         # we already have a buffer, so
         return value
     elif is_hex(value):
