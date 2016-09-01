@@ -18,7 +18,7 @@ setup(
     description='library for generating and validating Merkle Trees and receipts, compliant with chainpoint v2',
     author='MIT Media Lab Digital Certificates',
     tests_require=['tox'],
-    url='https://github.com/digital-certificates/merkle-proofs',
+    url='https://github.com/blockchain-certificates/merkle-proofs',
     license='MIT',
     author_email='certs@media.mit.edu',
     long_description=long_description,
