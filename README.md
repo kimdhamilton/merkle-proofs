@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/blockchain-certificates/merkle-proofs.svg?branch=master)](https://travis-ci.org/blockchain-certificates/merkle-proofs)
+
 # About
 
 Python library allowing creation of Merkle trees and output receipts
