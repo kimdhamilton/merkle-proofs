@@ -67,7 +67,7 @@ def _is_hex(content):
 
 
 def get_buffer(value):
-    if type(value) is not str:
+    if isinstance(value, (bytes, bytearray)) and not isinstance(value, str):
         # we already have a buffer, so
         return value
     elif _is_hex(value):

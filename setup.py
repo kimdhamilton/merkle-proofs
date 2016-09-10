@@ -14,7 +14,7 @@ with open(os.path.join(here, 'README.md')) as fp:
 
 setup(
     name='merkle-proofs',
-    version='0.0.3',
+    version='0.0.4',
     description='library for generating and validating Merkle Trees and receipts, compliant with chainpoint v2',
     author='MIT Media Lab Digital Certificates',
     tests_require=['tox'],
