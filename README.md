@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/blockchain-certificates/merkle-proofs.svg?branch=master)](https://travis-ci.org/blockchain-certificates/merkle-proofs)
 [![PyPI version](https://badge.fury.io/py/merkle-proofs.svg)](https://badge.fury.io/py/merkle-proofs)
 
-# About
+# Merkle Proofs 
 
 Python library allowing creation of Merkle trees and output receipts
 in a format consistent with the [chainpoint](https://github.com/chainpoint) v2 standard.
@@ -12,12 +12,12 @@ This was developed in support of the [Blockchain Certificates](http://certificat
 It supports only a subset of the Chainpoint v2 standard.
 
 
-## Using the pypi package
+# Using the pypi package
 
 The most common way to use this is to add the [latest cert-verifier pypi package](https://badge.fury.io/py/merkle-proofs) to your project dependencies. 
 
 
-## Running the CLI locally
+# Running the CLI locally
 
 1. Ensure you have an python environment. [Recommendations](https://github.com/blockchain-certificates/developer-common-docs/blob/master/virtualenv.md)
 
@@ -33,7 +33,7 @@ The most common way to use this is to add the [latest cert-verifier pypi package
   pip install .
   ```
 
-## Unit tests
+# Unit tests
 
 This project uses tox to validate against several python environments.
 
