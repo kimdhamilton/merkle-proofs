@@ -12,12 +12,12 @@ This was developed in support of the [Blockchain Certificates](http://certificat
 It supports only a subset of the Chainpoint v2 standard.
 
 
-# Using the pypi package
+## Using the pypi package
 
 The most common way to use this is to add the [latest cert-verifier pypi package](https://badge.fury.io/py/merkle-proofs) to your project dependencies. 
 
 
-# Running the CLI locally
+## Running the CLI locally
 
 1. Ensure you have an python environment. [Recommendations](https://github.com/blockchain-certificates/developer-common-docs/blob/master/virtualenv.md)
 
@@ -33,14 +33,16 @@ The most common way to use this is to add the [latest cert-verifier pypi package
   pip install .
   ```
 
-# Unit tests
+## Unit tests
 
 This project uses tox to validate against several python environments.
 
-```
-tox
-```
+1. Ensure you have an python environment. [Recommendations](https://github.com/blockchain-certificates/developer-common-docs/blob/master/virtualenv.md)
 
+2. Run tests
+  ```
+  ./run_tests.sh
+  ```
+## Contact
 
-
-
+Contact [certs@mit.edu](mailto:certs@mit.edu) with questions
