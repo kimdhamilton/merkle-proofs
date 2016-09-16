@@ -148,9 +148,9 @@ class MerkleTree:
             '@context': 'https://w3id.org/chainpoint/v2',
             '@type': 'BlockchainReceipt',
             'type': 'ChainpointSHA256v2',
-            'targetHash': hexlify(self.tree.get_leaf(index)),
-            'merkleRoot': self.tree.get_merkle_root(),
-            'proof': self.tree.get_proof(index),
+            'targetHash': hexlify(self.get_leaf(index)),
+            'merkleRoot': self.get_merkle_root(),
+            'proof': self.get_proof(index),
             'anchors': [
                 {
                     'type': 'BTCOpReturn',

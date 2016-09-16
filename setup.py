@@ -14,13 +14,13 @@ with open(os.path.join(here, 'README.md')) as fp:
 
 setup(
     name='merkle-proofs',
-    version='0.0.4',
+    version='0.0.5',
     description='library for generating and validating Merkle Trees and receipts, compliant with chainpoint v2',
     author='MIT Media Lab Digital Certificates',
     tests_require=['tox'],
     url='https://github.com/blockchain-certificates/merkle-proofs',
     license='MIT',
-    author_email='certs@media.mit.edu',
+    author_email='certs@mit.edu',
     long_description=long_description,
     packages=['merkleproof'],
     include_package_data=True,
