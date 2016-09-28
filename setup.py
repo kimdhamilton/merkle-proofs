@@ -20,7 +20,7 @@ setup(
     tests_require=['tox'],
     url='https://github.com/blockchain-certificates/merkle-proofs',
     license='MIT',
-    author_email='certs@mit.edu',
+    author_email='info@blockcerts.org',
     long_description=long_description,
     packages=['merkleproof'],
     include_package_data=True,
