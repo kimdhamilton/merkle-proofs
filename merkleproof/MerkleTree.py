@@ -146,7 +146,6 @@ class MerkleTree:
     def make_receipt(self, index, txid):
         receipt = {
             '@context': 'https://w3id.org/chainpoint/v2',
-            '@type': 'BlockchainReceipt',
             'type': 'ChainpointSHA256v2',
             'targetHash': hexlify(self.get_leaf(index)),
             'merkleRoot': self.get_merkle_root(),
